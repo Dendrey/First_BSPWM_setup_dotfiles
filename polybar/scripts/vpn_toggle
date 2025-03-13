@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# Проверяем статус
+if ip a | grep -q "amn0"; then
+    # Если VPN активен, выключаем его
+    amnezia-vpn stop
+else
+    # Если VPN неактивен, включаем его
+    amnezia-vpn start
+fi

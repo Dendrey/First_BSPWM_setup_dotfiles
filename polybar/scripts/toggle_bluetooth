@@ -1,0 +1,10 @@
+#!/bin/bash
+# Launch blueman-manager if not already running
+
+if pgrep -x "blueman-manager" > /dev/null; then
+    # If blueman-manager is already running, bring it to focus
+    wmctrl -a "Bluetooth Devices"
+else
+    # Otherwise, launch blueman-manager
+    blueman-manager &
+fi
