@@ -36,4 +36,11 @@ sudo systemctl enable systemd-resolved.service && sudo systemctl start systemd-r
 chsh -s /bin/fish
 ```
 
-
+установка (окна входа в систему) ly:
+```
+git clone https://aur.archlinux.org/ly.git
+cd ly
+makepkg -si
+sudo systemctl enable ly
+sudo systemctl start ly
+```
