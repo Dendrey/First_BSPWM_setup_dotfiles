@@ -30,3 +30,10 @@ sudo systemctl enable systemd-resolved.service && sudo systemctl start systemd-r
 ```
  sudo ln -sf ../run/systemd/resolve/stub-resolv.conf /etc/resolv.conf
 ```
+
+Установка fish по умолчанию:
+```
+chsh -s /bin/fish
+```
+
+
