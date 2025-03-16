@@ -1,6 +1,14 @@
-для правильной смены раскладки:
-sudo nano /etc/X11/xorg.conf.d/00-keyboard.conf
+для старта графической оболочки:
+```
+startx
+```
 
+
+для правильной смены раскладки:
+```
+sudo nano /etc/X11/xorg.conf.d/00-keyboard.conf
+```
+В самом файле прописать раскладки и сочетание клавиш для смены
 ```
 Section "InputClass"
     Identifier "system-keyboard"
