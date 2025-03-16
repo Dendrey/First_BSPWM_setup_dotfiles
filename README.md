@@ -1,3 +1,6 @@
+для установки системы:
+видео https://youtu.be/i9M94y8PIsU?si=MEzejuyfQ9Jd0YLr
+
 для старта графической оболочки:
 ```
 startx
