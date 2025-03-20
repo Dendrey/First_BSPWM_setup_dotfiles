@@ -1,0 +1,93 @@
+;; Vars ;;
+(defpoll music-player     :interval "1s" "~/.config/bspwm/src/YandexMusicControl --player")
+(defpoll music-art        :interval "3s" "~/.config/bspwm/src/YandexMusicControl --cover")
+(defpoll music-title      :interval "1s" "~/.config/bspwm/src/YandexMusicControl --title")
+(defpoll music-artist     :interval "1s" "~/.config/bspwm/src/YandexMusicControl --artist")
+(defpoll music-status     :interval "1s" "~/.config/bspwm/src/YandexMusicControl --status")
+(defpoll music-position   :interval "1s" "~/.config/bspwm/src/YandexMusicControl --position")
+(defpoll music-length     :interval "1s" "~/.config/bspwm/src/YandexMusicControl --length")
+
+;; Widgets ;;
+(defwidget player []
+    (box
+        :class "player"
+        :space-evenly false
+        (box
+            :class "player-art"
+            :style "background-image: url('${music-art}')"
+            (box
+                :class "player-info"
+                :space-evenly false
+                :orientation "v"
+                :spacing 10
+                (label
+                    :class "player-title"
+                    :halign "start"
+                    :text music-title
+                    :limit-width 30
+                    :wrap true
+                    :xalign 0
+                )
+                (label
+                    :class "player-artist"
+                    :halign "start"
+                    :text music-artist
+                    :limit-width 35
+                )
+            )
+        )
+        (box
+            :class "player-controls"
+            :orientation "v"
+            :valign "center"
+            :hexpand true
+            :space-evenly false
+            :spacing 20
+            (eventbox
+                :cursor "pointer"
+                (button
+                    :class "player-previous"
+                    :onclick "~/.config/bspwm/src/YandexMusicControl --previous"
+                    "󰒮"
+                )
+            )
+            (eventbox
+                :cursor "pointer"
+                (button
+                    :class "player-toggle"
+                    :onclick "~/.config/bspwm/src/YandexMusicControl --toggle"
+                    {music-status == "Playing" ? "󰏤" : "󰐊"}
+                )
+            )
+            (eventbox
+                :cursor "pointer"
+                (button
+                    :class "player-next"
+                    :onclick "~/.config/bspwm/src/YandexMusicControl --next"
+                    "󰒭"
+                )
+            )
+            (eventbox
+                :cursor "pointer"
+                (button
+                    :class "min"
+                    :onclick "eww open --toggle music"
+                    "󰅙"
+                )
+            )
+        )
+    )
+)
+
+;; Windows ;;
+(defwindow music
+  :geometry
+  (geometry
+    :x "24%"
+    :y "-77%"
+    :anchor "bottom center"
+  )
+  :wm-ignore false
+  (player)
+)
+

@@ -77,11 +77,18 @@ super + {_,ctrl + }{1-9,0}
 super + f
 	firefox
 super + e
-	pcmanfm
+	thunar
 ctrl + shift
 	setxkbmap -layout us && xsetroot -name "EN" || setxkbmap -layout ru && xsetroot -name "RU"
+
 
 super + ctrl + k
     ~/.config/sxhkd/move_to_next_empty_desktop.sh
 super + shift + p
 	flameshot gui
+
+
+super + shift + s
+    bspc node focused -g sticky=on; bspc node focused -g above=on
+super + ctrl + s
+    bspc node focused -g sticky=off; bspc node focused -g above=off

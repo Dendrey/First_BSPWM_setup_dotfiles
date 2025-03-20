@@ -1,0 +1,73 @@
+#!/usr/bin/env bash
+
+# Управление Яндекс.Музыкой, встроенным плеером и YouTube через D-Bus и playerctl
+
+BROWSER="firefox"  # Или chrome/chromium, в зависимости от используемого браузера
+COVER_PATH="/tmp/music_cover.jpg"
+LAST_SONG_FILE="/tmp/last_song.txt"
+
+detect_player() {
+    if playerctl --list-all | grep -q "firefox"; then
+        echo "firefox"
+    elif playerctl --list-all | grep -q "chromium"; then
+        echo "chromium"
+    elif playerctl --list-all | grep -q "mpv"; then
+        echo "mpv"
+    else
+        echo "default"
+    fi
+}
+
+PLAYER=$(detect_player)
+
+music_dbus() {
+    playerctl --player=$PLAYER metadata "$1" 2>/dev/null || echo ""
+}
+
+case $1 in
+    --next)
+        playerctl --player=$PLAYER next
+        ;;
+    --previous)
+        playerctl --player=$PLAYER previous
+        ;;
+    --toggle)
+        playerctl --player=$PLAYER play-pause
+        ;;
+    --stop)
+        playerctl --player=$PLAYER stop
+        ;;
+    --title)
+        title=$(music_dbus xesam:title)
+        echo "${title:-Неизвестный трек}"
+        ;;
+    --artist)
+        artist=$(music_dbus xesam:artist)
+        echo "${artist:-Неизвестный исполнитель}"
+        ;;
+    --status)
+        status=$(playerctl --player=$PLAYER status 2>/dev/null)
+        echo "${status:-Остановлено}"
+        ;;
+    --cover)
+        current_song="$(music_dbus xesam:title)-$(music_dbus xesam:artist)"
+        last_song=""
+        [ -f "$LAST_SONG_FILE" ] && last_song=$(cat "$LAST_SONG_FILE")
+        
+        if [ "$current_song" != "$last_song" ] || [ ! -f "$COVER_PATH" ]; then
+            cover_url=$(music_dbus mpris:artUrl)
+            if [[ "$cover_url" =~ "https://" ]]; then
+                curl -s "$cover_url" -o "$COVER_PATH"
+            else
+                cp ~/.config/bspwm/src/assets/fallback.webp "$COVER_PATH"
+            fi
+            echo "$current_song" > "$LAST_SONG_FILE"
+        fi
+        echo "$COVER_PATH"
+        ;;
+    *)
+        echo "Использование: $0 {--next|--previous|--toggle|--stop|--title|--artist|--status|--cover}"
+        exit 1
+        ;;
+esac
+

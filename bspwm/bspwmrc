@@ -38,3 +38,5 @@ picom --config $HOME/.config/picom/picom.conf &
 nitrogen  --restore &
 dunst &
 polybar &
+xautolock -time 30 -locker "$HOME/.config/bspwm/src/ScreenLocker" &
+
